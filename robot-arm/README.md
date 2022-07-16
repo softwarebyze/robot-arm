@@ -1,2 +1,2 @@
 ## Robot Arm
-Provides a class for keeping track of robotic arm joint positions
+Provides a python class for keeping track of robotic arm joint positions
