@@ -9,7 +9,7 @@ from math import sin, cos, radians
 def get_joint_coords(lengths: tuple | list,
                      angles: list[float],
                      origin: tuple = (0, 0),
-                     precision: int | None = None
+                     precision: int | None = 2
                      ) -> list[list[float]]:
     """
     Returns a list of joint coordinates given an origin, lengths, and angles
