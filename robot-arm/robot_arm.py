@@ -25,7 +25,3 @@ class RobotArm:
         self.joints = joints
 
     angle_range = range(0, 181)
-
-
-if __name__ == "__main__":
-    pass
