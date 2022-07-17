@@ -11,32 +11,6 @@ from math import dist
 
 from utils.get_joint_coords import get_joint_coords
 
-"""
-Goal: try all positions and return closest ones to goal position.
-Assumption: Joint has a range of 0 to 180 deg as in SG90 servos
-Given an origin, lengths, and goal position,
-for every combination of angles for len(lengths) joints,
-compute the resulting end effector position.
-Compute the distance to the goal position.
-Sort the combos by increasing distance.
-Return the first 5 in a list.
-# If any combos have distance 0, add them as the solution list.
-# Else if any combos have distance rounded to integer == 0, add them to solution list (but keep the unrounded distance).
-# Else 
-
-Example:
-                     O  goal position = [2*cos(90)+2*cos(45), 2*sin(90)+2*sin(45)] ~= [1.414, 3.414]
-lengths[1] = 2      /   
-                   /       45 deg
-                  O   --- angle reference
-lengths[0] = 2    | 
-                  |        90 deg
-origin = (0,0)    O   --- angle reference
-
-solutions[example] = [90,45]
-
-"""
-
 
 def brute_force(robot: RobotArm, goal_pos) -> RobotArm:
     """tries every possible angle combo and outputs the best RobotArm"""
