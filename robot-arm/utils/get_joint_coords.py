@@ -46,24 +46,11 @@ def get_joint_coords(lengths: tuple | list,
     joint_coords = [list(origin)]  # joint_coords = [[0, 0]]
     for i in range(1, len(lengths) + 1):  # for i in 1, 2, ... , n (number of links) = (1, 2)
         joint_coords.append([])  # joint_coords = [[0, 0], []]
-
-        current_angles = angles[:i]
-        angle_sum_degrees = sum(current_angles)
-        angle_sum_radians = radians(angle_sum_degrees)
-        delta_x = cos(angle_sum_radians)
-        delta_y = sin(angle_sum_radians)
         joint_coords[i] = [  # joint_coords[1] = [[0, 0], [
-            # 1: round ((previous x-coord) + (link-length * cos(angle 1))
-            # 2: round ((previous x-coord) + (link-length * cos(angle 1 + angle 2))
-            round(joint_coords[i - 1][0] + (lengths[i - 1] * delta_x), precision),
-            round(joint_coords[i - 1][1] + (lengths[i - 1] * delta_y), precision)]
+            round(joint_coords[i - 1][0] + (lengths[i - 1] * cos(radians(sum(angles[:i])))), precision),
+            round(joint_coords[i - 1][1] + (lengths[i - 1] * sin(radians(sum(angles[:i])))), precision)]
     return joint_coords
 
-
-#
-# l1cosa1
-# l1cosa1 + l2cos(a1 + a2)
-# l1cosa1 + l2cos(a1 + a2) + l3cos(a1 + a2 + a3)
 
 if __name__ == "__main__":
     test_lengths = [1, 1]
