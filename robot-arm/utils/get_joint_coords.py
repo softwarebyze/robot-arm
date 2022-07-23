@@ -33,20 +33,20 @@ def get_joint_coords(lengths: tuple | list,
     assert len(lengths) == len(angles), "Expecting same number of lengths and angles"
 
     joint_coords = [list(origin)]  # joint_coords = [[0, 0]]
-    for i in range(1, len(lengths) + 1):  # for i in 1, 2, ... , n (number of links) = (1, 2)
-        joint_coords.append([])  # joint_coords = [[0, 0], []]
-        joint_coords[i] = [  # joint_coords[1] = [[0, 0], [
+    for i in range(1, len(lengths) + 1):
+        joint_coords.append([
             round(joint_coords[i - 1][0] + (lengths[i - 1] * cos(radians(sum(angles[:i])))), precision),
-            round(joint_coords[i - 1][1] + (lengths[i - 1] * sin(radians(sum(angles[:i])))), precision)]
+            round(joint_coords[i - 1][1] + (lengths[i - 1] * sin(radians(sum(angles[:i])))), precision)
+        ])
     return joint_coords
 
 
 if __name__ == "__main__":
-    test_lengths = [1, 1]
-    test_angles = [90, 90]
+    test_lengths = [1, 1, 1]
+    test_angles = [90, 90, 0]
     my_coords = get_joint_coords(test_lengths, test_angles, precision=None)
     print(f'A planar robot has {len(test_lengths)} links and {len(test_angles)} joints that rotate.')
-    print(f'The lengths are: {test_lengths}')
-    print(f'The joint angles are: {test_angles}')
-    print(input('What do you expect the joint coords to be?\n'))
-    print(my_coords)
+    print(f'The lengths are:\t\t\t{test_lengths}')
+    print(f'The joint angles are:\t\t{test_angles} deg')
+    input('What do you expect the joint coords to be?\n')
+    print(f'Joint coords: \t\t\t\t{my_coords}')

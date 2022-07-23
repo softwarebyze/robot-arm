@@ -4,44 +4,45 @@ This solver tries every possible combination of joint angles and
 returns a RobotArm with angles closest to reaching the goal position.
 The purpose is to have a simple but slow solver to use for comparing with
 more advanced inverse kinematics solvers
+TODO: bee colony algorithm?
 """
 
 import itertools
 from math import dist
 
+from pandas import DataFrame
+
 from robot_arm import RobotArm
 from utils.get_joint_coords import get_joint_coords
 
 
-def brute_force(robot: RobotArm, goal_pos) -> RobotArm:
-    """tries every possible angle combo and outputs the best RobotArm"""
-    # first get a list of all possible angle permutations using the cartesian product
-    possible_angles = []
-    for combo in itertools.product(robot.angle_range, repeat=len(robot.lengths)):
-        possible_angles.append(combo)  # this gives a list of tuples
+def brute_force(robot: RobotArm, goal_pos: list | tuple) -> RobotArm:
+    """Tries every possible angle combo and outputs the best RobotArm"""
+
+    # first get an iterator of all possible angle permutations using the cartesian product
+    possible_angles = list(itertools.product([i for i in robot.angle_range], repeat=len(robot.lengths)))
 
     # make a list of all the end effector coordinates for all the possible joint angles
     coords = []
     for angles in possible_angles:
-        coords.append(get_joint_coords(robot.lengths, list(angles), origin=robot.origin))
+        coords.append(get_joint_coords(robot.lengths, list(angles), origin=robot.origin, precision=3))
 
-    # make a list with the distance from the goal of each combination of joint angles
+    # make a list with the distance from the goal to each combination of joint angles
     dists = []
     for coord in coords:
         dists.append(dist(goal_pos, coord[-1]))
 
-    # sort list of possible joint angles by distance to goal position by dist
-    # sorted_dists = sorted(dists)
-    sorted_possible_angles = [a for d, a in sorted(zip(dists, possible_angles))]
-    # sorted_coords = [c for d, c in sorted(zip(dists, coords))]
+    data = {'angle_combos': possible_angles,
+            'coords': coords,
+            'dists': dists}
 
-    return RobotArm(robot.lengths, robot.origin, sorted_possible_angles[0])
+    df = DataFrame(data).sort_values(by=['dists'])
+    return RobotArm(robot.lengths, robot.origin, df['angle_combos'].iloc[0])
 
 
-test_robot = RobotArm([1])
+if __name__ == '__main__':
+    test_robot = RobotArm([1, 1])
+    gol = (0, 2)
+    test_robot = brute_force(test_robot, gol)
 
-# test_robot = brute_force(test_robot, (0, 1))
-print(brute_force(test_robot, (0, 1)).joints[-1])
-# print(test_robot.joints)
-# print(get_joint_coords(test_robot.lengths, list(test_robot.joints)))
-# print('done')
+    print(f'Joint Angles: \t{test_robot.joint_angles}')
