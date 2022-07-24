@@ -23,6 +23,10 @@ class RobotArm:
         self.lengths = lengths
         self.origin = origin
         self.joint_angles = joint_angles
-        self.coords: list = None
+        self.coords: list | None = None
 
     angle_range = range(0, 181)
+    #
+    # @property
+    # def x_coords(self):
+    #     return [coord[0] for coord in self.coords]

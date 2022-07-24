@@ -5,6 +5,8 @@ and joint angles
 
 from math import sin, cos, radians
 
+from robot_arm import RobotArm
+
 
 def get_joint_coords(lengths: tuple | list,
                      angles: list[float],
@@ -39,6 +41,10 @@ def get_joint_coords(lengths: tuple | list,
             round(joint_coords[i - 1][1] + (lengths[i - 1] * sin(radians(sum(angles[:i])))), precision)
         ])
     return joint_coords
+
+
+def get_robot_coords(robot: RobotArm, precision=None):
+    return get_joint_coords(lengths=robot.lengths, angles=robot.joint_angles, precision=precision)
 
 
 if __name__ == "__main__":
