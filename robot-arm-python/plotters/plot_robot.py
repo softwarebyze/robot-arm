@@ -3,8 +3,8 @@ Plot a Robot
 """
 import matplotlib.pyplot as plt
 
-from robot_arm import RobotArm
-from utils.get_joint_coords import get_robot_coords
+from ..robot_arm import RobotArm
+from ..utils.get_joint_coords import get_robot_coords
 
 
 def show_robot(robot: RobotArm, axes=None, show: bool = True) -> None:
